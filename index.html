@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سیستم نوبت دهی مشاور</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- افزودن EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        // مقداردهی اولیه EmailJS با شناسه سرویس شما
+        (function() {
+            emailjs.init("lqKjKIM-eZ78ehHGK"); // کلید عمومی شما
+        })();
+    </script>
+    <style>
+        :root {
+            --primary: #4b6cb7;
+            --secondary: #182848;
+            --accent: #36D1DC;
+            --light: #f5f7fa;
+            --dark: #2d3748;
+            --success: #48bb78;
+            --warning: #ecc94b;
+            --danger: #f56565;
+            --gray: #a0aec0;
+            --disabled: #cbd5e0;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            transform: rotate(30deg);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 32px;
+            position: relative;
+        }
+        
+        .description {
+            margin: 15px 0 0;
+            font-size: 18px;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .form-section, .schedule-section {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+        
+        .form-section:hover, .schedule-section:hover {
+            transform: translateY(-5px);
+        }
+        
+        .section-title {
+            color: var(--primary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background-color: #f8fafc;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(54, 209, 220, 0.2);
+            background-color: white;
+        }
+        
+        button {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(75, 108, 183, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: var(--disabled);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .day-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .day-btn {
+            flex: 1;
+            padding: 12px;
+            background-color: #edf2f7;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .day-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        
+        .day-btn.disabled {
+            background-color: var(--disabled);
+            color: #718096;
+            cursor: not-allowed;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        
+        .booked {
+            background-color: #ffebee;
+            color: #c53030;
+        }
+        
+        .confirmed {
+            background-color: #e8f5e9;
+            color: #2f855a;
+        }
+        
+        .available {
+            background-color: #e3f2fd;
+            color: #2b6cb0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .available:hover {
+            background-color: #bbdefb;
+            transform: scale(1.02);
+        }
+        
+        .appointment-details {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 18px 24px;
+            border-radius: 10px;
+            color: white;
+            background-color: var(--success);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .notification.show {
+            opacity: 1;
+        }
+        
+        .notification.error {
+            background-color: var(--danger);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--dark);
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .badge-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .badge-warning {
+            background-color: var(--warning);
+            color: var(--dark);
+        }
+        
+        .badge-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .badge-disabled {
+            background-color: var(--disabled);
+            color: #718096;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .day-selector {
+                flex-direction: column;
+            }
+            
+            header {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 26px;
+            }
+            
+            .description {
+                font-size: 16px;
+            }
+        }
+        
+        .email-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .email-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .email-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .user-actions button {
+            flex: 1;
+        }
+        
+        .admin-login {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .admin-login-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+            max-width: 200px;
+            margin: 0 auto;
+        }
+        
+        .instructions {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calendar-check"></i> سیستم نوبت دهی مشاور</h1>
+            <p class="description">رزرو آنلاین نوبت مشاوره - حداکثر ۵ نوبت در روز</p>
+        </header>
+
+        <div class="instructions">
+            <h2 class="section-title"><i class="fas fa-info-circle"></i> راهنمای استفاده</h2>
+            <p>1. برای رزرو نوبت، فرم سمت راست را پر کنید.</p>
+            <p>2. پس از رزرو، اطلاعات به ایمیل مدیر ارسال می‌شود.</p>
+            <p>3. برای مشاهده یا لغو نوبت‌های خود از دکمه «مشاهده نوبت‌های من» استفاده کنید.</p>
+            <p>4. رمز عبور پنل مدیر: <strong>admin123</strong></p>
+        </div>
+
+        <div class="admin-login">
+            <button class="admin-login-btn" onclick="showAdminLogin()"><i class="fas fa-lock"></i> ورود مدیر</button>
+        </div>
+
+        <div class="main-content">
+            <div class="form-section">
+                <h2 class="section-title"><i class="fas fa-pencil-alt"></i> رزرو نوبت جدید</h2>
+                <form id="appointment-form">
+                    <div class="form-group">
+                        <label for="name"><i class="fas fa-user"></i> نام:</label>
+                        <input type="text" id="name" required placeholder="نام دانش آموز">
+                    </div>
+                    <div class="form-group">
+                        <label for="family"><i class="fas fa-user"></i> نام خانوادگی:</label>
+                        <input type="text" id="family" required placeholder="نام خانوادگی دانش آموز">
+                    </div>
+                    <div class="form-group">
+                        <label for="school"><i class="fas fa-school"></i> مدرسه:</label>
+                        <input type="text" id="school" required placeholder="نام مدرسه">
+                    </div>
+                    <div class="form-group">
+                        <label for="grade"><i class="fas fa-graduation-cap"></i> پایه تحصیلی:</label>
+                        <select id="grade" required>
+                            <option value="">پایه را انتخاب کنید</option>
+                            <option value="هفتم">هفتم</option>
+                            <option value="هشتم">هشتم</option>
+                            <option value="نهم">نهم</option>
+                            <option value="دهم">دهم</option>
+                            <option value="یازدهم">یازدهم</option>
+                            <option value="دوازدهم">دوازدهم</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="day"><i class="fas fa-calendar-day"></i> روز:</label>
+                        <select id="day" required onchange="updateTimeSlots()">
+                            <option value="">روز را انتخاب کنید</option>
+                            <option value="saturday">شنبه</option>
+                            <option value="sunday">یکشنبه</option>
+                            <option value="monday">دوشنبه</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="time"><i class="fas fa-clock"></i> ساعت:</label>
+                        <select id="time" required>
+                            <option value="">ابتدا روز را انتخاب کنید</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="submit-btn"><i class="fas fa-calendar-plus"></i> رزرو نوبت</button>
+                </form>
+            </div>
+
+            <div class="schedule-section">
+                <h2 class="section-title"><i class="fas fa-calendar-week"></i> برنامه زمان‌بندی</h2>
+                <div class="day-selector">
+                    <button class="day-btn active" id="saturday-btn" onclick="showDay('saturday')">شنبه</button>
+                    <button class="day-btn" id="sunday-btn" onclick="showDay('sunday')">یکشنبه</button>
+                    <button class="day-btn" id="monday-btn" onclick="showDay('monday')">دوشنبه</button>
+                </div>
+                <div id="schedule-table">
+                    <!-- برنامه زمان‌بندی در اینجا نمایش داده می‌شود -->
+                </div>
+            </div>
+        </div>
+
+        <div class="appointment-details hidden" id="appointment-details">
+            <h2 class="section-title"><i class="fas fa-info-circle"></i> نوبت‌های من</h2>
+            <div id="details-content">
+                <!-- اطلاعات نوبت در اینجا نمایش داده می‌شود -->
+            </div>
+        </div>
+        
+        <div class="user-actions">
+            <button onclick="showMyAppointments()"><i class="fas fa-list"></i> مشاهده نوبت‌های من</button>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text"></span>
+    </div>
+
+    <div class="email-modal" id="email-modal">
+        <div class="email-content">
+            <h2 class="section-title"><i class="fas fa-envelope"></i> ارسال ایمیل</h2>
+            <p id="email-message">ایمیل با جزئیات نوبت برای مدیر ارسال شد!</p>
+            <div id="email-details" style="margin: 20px 0; padding: 15px; background: #f8fafc; border-radius: 10px;"></div>
+            <button onclick="hideEmailModal()"><i class="fas fa-times"></i> بستن</button>
+        </div>
+    </div>
+
+    <div class="email-modal" id="admin-login-modal">
+        <div class="email-content">
+            <h2 class="section-title"><i class="fas fa-lock"></i> ورود به پنل مدیر</h2>
+            <div class="form-group">
+                <label for="admin-password">رمز عبور:</label>
+                <input type="password" id="admin-password" placeholder="رمز عبور را وارد کنید">
+            </div>
+            <button onclick="loginAdmin()"><i class="fas fa-sign-in-alt"></i> ورود</button>
+            <button onclick="hideAdminLogin()" style="background: var(--danger); margin-top: 10px;"><i class="fas fa-times"></i> انصراف</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>سیستم نوبت دهی مشاور - طراحی شده برای استقرار آنلاین</p>
+        <p>کلیه حقوق محفوظ است - ۱۴۰۳</p>
+    </footer>
+
+    <script>
+        // داده‌های نوبت‌ها
+        let appointments = JSON.parse(localStorage.getItem('appointments')) || {};
+        
+        // روزهای غیرفعال
+        let disabledDays = JSON.parse(localStorage.getItem('disabledDays')) || {
+            saturday: false,
+            sunday: false,
+            monday: false
+        };
+        
+        // زمان‌های موجود برای هر روز (۵ نوبت)
+        const timeSlots = {
+            saturday: ['۸:۰۰ - ۸:۴۵', '۹:۰۰ - ۹:۴۵', '۱۰:۰۰ - ۱۰:۴۵', '۱۱:۰۰ - ۱۱:۴۵', '۱۲:۰۰ - ۱۲:۴۵'],
+            sunday: ['۸:۰۰ - ۸:۴۵', '۹:۰۰ - ۹:۴۵', '۱۰:۰۰ - ۱۰:۴۵', '۱۱:۰۰ - ۱۱:۴۵', '۱۲:۰۰ - ۱۲:۴۵'],
+            monday: ['۸:۰۰ - ۸:۴۵', '۹:۰۰ - ۹:۴۵', '۱۰:۰۰ - ۱۰:۴۵', '۱۱:۰۰ - ۱۱:۴۵', '۱۲:۰۰ - ۱۲:۴۵']
+        };
+
+        // روزهای هفته
+        const days = {
+            saturday: 'شنبه',
+            sunday: 'یکشنبه',
+            monday: 'دوشنبه'
+        };
+
+        // شناسه کاربری منحصر به فرد
+        let userId = localStorage.getItem('userId');
+        if (!userId) {
+            userId = 'user_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('userId', userId);
+        }
+
+        // وضعیت مدیر
+        let isAdmin = false;
+
+        // مقداردهی اولیه
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            updateDayButtons();
+            showDay('saturday');
+        });
+
+        // به روزرسانی دکمه‌های روز بر اساس وضعیت
+        function updateDayButtons() {
+            for (const day in disabledDays) {
+                const btn = document.getElementById(`${day}-btn`);
+                if (disabledDays[day]) {
+                    btn.classList.add('disabled');
+                } else {
+                    btn.classList.remove('disabled');
+                }
+            }
+        }
+
+        // مقداردهی اولیه برنامه
+        function initializeApp() {
+            // مدیریت ارسال فرم
+            document.getElementById('appointment-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                bookAppointment();
+            });
+
+            // بررسی نوبت‌هایی که زمان تأیید آنها فرا رسیده
+            checkConfirmations();
+        }
+
+        // به روزرسانی لیست ساعات بر اساس روز انتخاب شده
+        function updateTimeSlots() {
+            const daySelect = document.getElementById('day');
+            const timeSelect = document.getElementById('time');
+            const selectedDay = daySelect.value;
+            
+            timeSelect.innerHTML = '';
+            
+            if (selectedDay) {
+                // بررسی آیا روز غیرفعال است
+                if (disabledDays[selectedDay]) {
+                    const option = document.createElement('option');
+                    option.value = '';
+                    option.textContent = 'این روز غیرفعال است';
+                    timeSelect.appendChild(option);
+                    document.getElementById('submit-btn').disabled = true;
+                } else {
+                    timeSlots[selectedDay].forEach(time => {
+                        const option = document.createElement('option');
+                        option.value = time;
+                        option.textContent = time;
+                        timeSelect.appendChild(option);
+                    });
+                    document.getElementById('submit-btn').disabled = false;
+                }
+            } else {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'ابتدا روز را انتخاب کنید';
+                timeSelect.appendChild(option);
+                document.getElementById('submit-btn').disabled = true;
+            }
+        }
+
+        // نمایش برنامه یک روز خاص
+        function showDay(day) {
+            // بررسی آیا روز غیرفعال است
+            if (disabledDays[day]) {
+                const scheduleTable = document.getElementById('schedule-table');
+                scheduleTable.innerHTML = `
+                    <div style="text-align: center; padding: 30px; background: #f8fafc; border-radius: 10px;">
+                        <i class="fas fa-calendar-times" style="font-size: 48px; color: #a0aec0; margin-bottom: 15px;"></i>
+                        <h3 style="color: #718096;">این روز غیرفعال است</h3>
+                        <p>در این روز امکان رزرو نوبت وجود ندارد.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // به روز رسانی دکمه‌های روز
+            document.querySelectorAll('.day-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`${day}-btn`).classList.add('active');
+            
+            const scheduleTable = document.getElementById('schedule-table');
+            let html = `<h3 style="margin-bottom: 20px;"><i class="fas fa-calendar-day"></i> برنامه ${days[day]}</h3>`;
+            html += '<table>';
+            html += '<tr><th>ساعت</th><th>وضعیت</th><th>عملیات</th></tr>';
+            
+            timeSlots[day].forEach(time => {
+                const slotId = `${day}-${time}`;
+                const appointment = appointments[slotId];
+                let status = '<span class="badge badge-success">آزاد</span>';
+                let statusClass = 'available';
+                let action = `<button onclick="selectSlot('${day}', '${time}')"><i class="fas fa-check"></i> رزرو</button>`;
+                
+                if (appointment) {
+                    if (appointment.confirmed) {
+                        status = '<span class="badge badge-success">تایید شده</span>';
+                        statusClass = 'confirmed';
+                        action = `<button onclick="showAppointmentDetails('${slotId}')"><i class="fas fa-eye"></i> مشاهده</button>`;
+                    } else {
+                        status = '<span class="badge badge-warning">رزرو شده</span>';
+                        statusClass = 'booked';
+                        action = `<button onclick="showAppointmentDetails('${slotId}')"><i class="fas fa-eye"></i> مشاهده</button>`;
+                    }
+                }
+                
+                html += `<tr class="${statusClass}">`;
+                html += `<td>${time}</td>`;
+                html += `<td>${status}</td>`;
+                html += `<td>${action}</td>`;
+                html += '</tr>';
+            });
+            
+            html += '</table>';
+            scheduleTable.innerHTML = html;
+        }
+
+        // انتخاب یک زمان برای رزرو
+        function selectSlot(day, time) {
+            document.getElementById('day').value = day;
+            document.getElementById('time').value = time;
+            document.getElementById('appointment-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // رزرو نوبت
+        function bookAppointment() {
+            const name = document.getElementById('name').value;
+            const family = document.getElementById('family').value;
+            const school = document.getElementById('school').value;
+            const grade = document.getElementById('grade').value;
+            const day = document.getElementById('day').value;
+            const time = document.getElementById('time').value;
+            
+            if (!name || !family || !school || !grade || !day || !time) {
+                showNotification('لطفاً تمام فیلدها را پر کنید', true);
+                return;
+            }
+            
+            // بررسی آیا روز غیرفعال است
+            if (disabledDays[day]) {
+                showNotification('این روز غیرفعال است. لطفاً روز دیگری انتخاب کنید.', true);
+                return;
+            }
+            
+            const slotId = `${day}-${time}`;
+            
+            if (appointments[slotId]) {
+                showNotification('این زمان قبلاً رزرو شده است', true);
+                return;
+            }
+            
+            // ایجاد نوبت جدید
+            appointments[slotId] = {
+                name,
+                family,
+                school,
+                grade,
+                day: days[day],
+                time,
+                bookedAt: new Date().toISOString(),
+                confirmed: false,
+                userId: userId // اضافه کردن شناسه کاربر
+            };
+            
+            // ذخیره در localStorage
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+            
+            // نمایش پیام موفقیت
+            showNotification('نوبت با موفقیت رزرو شد. این نوبت تا ۲ ساعت دیگر تأیید خواهد شد');
+            
+            // ریست کردن فرم
+            document.getElementById('appointment-form').reset();
+            document.getElementById('time').innerHTML = '<option value="">ابتدا روز را انتخاب کنید</option>';
+            document.getElementById('submit-btn').disabled = true;
+            
+            // بروزرسانی برنامه
+            showDay(day);
+            
+            // ارسال ایمیل به مدیر
+            sendEmailToAdmin(appointments[slotId]);
+        }
+
+        // نمایش جزئیات نوبت (فقط برای کاربر مربوطه)
+        function showAppointmentDetails(slotId) {
+            const appointment = appointments[slotId];
+            if (!appointment) return;
+            
+            // بررسی آیا نوبت متعلق به کاربر فعلی است
+            if (appointment.userId !== userId) {
+                showNotification('شما فقط می‌توانید نوبت‌های خود را مشاهده کنید', true);
+                return;
+            }
+            
+            const detailsContent = document.getElementById('details-content');
+            const appointmentDetails = document.getElementById('appointment-details');
+            
+            let html = `
+                <p><strong>نام و نام خانوادگی:</strong> ${appointment.name} ${appointment.family}</p>
+                <p><strong>مدرسه:</strong> ${appointment.school}</p>
+                <p><strong>پایه:</strong> ${appointment.grade}</p>
+                <p><strong>روز:</strong> ${appointment.day}</p>
+                <p><strong>ساعت:</strong> ${appointment.time}</p>
+                <p><strong>وضعیت:</strong> ${appointment.confirmed ? '<span class="badge badge-success">تایید شده</span>' : '<span class="badge badge-warning">رزرو شده (در انتظار تأیید)</span>'}</p>
+                <p><strong>زمان رزرو:</strong> ${new Date(appointment.bookedAt).toLocaleString('fa-IR')}</p>
+            `;
+            
+            if (!appointment.confirmed) {
+                html += `<button onclick="cancelAppointment('${slotId}')"><i class="fas fa-times"></i> لغو نوبت</button>`;
+            }
+            
+            detailsContent.innerHTML = html;
+            appointmentDetails.classList.remove('hidden');
+        }
+
+        // لغو نوبت
+        function cancelAppointment(slotId) {
+            const appointment = appointments[slotId];
+            
+            // بررسی آیا نوبت متعلق به کاربر فعلی است
+            if (appointment.userId !== userId) {
+                showNotification('شما فقط می‌توانید نوبت‌های خود را لغو کنید', true);
+                return;
+            }
+            
+            if (confirm('آیا از لغو این نوبت اطمینان دارید؟')) {
+                delete appointments[slotId];
+                localStorage.setItem('appointments', JSON.stringify(appointments));
+                
+                showNotification('نوبت با موفقیت لغو شد');
+                
+                document.getElementById('appointment-details').classList.add('hidden');
+                
+                // پیدا کردن روز برای بروزرسانی برنامه
+                const day = slotId.split('-')[0];
+                showDay(day);
+            }
+        }
+
+        // نمایش نوبت‌های کاربر
+        function showMyAppointments() {
+            const userAppointments = [];
+            
+            // یافتن تمام نوبت‌های کاربر
+            for (const slotId in appointments) {
+                if (appointments[slotId].userId === userId) {
+                    userAppointments.push({
+                        slotId,
+                        ...appointments[slotId]
+                    });
+                }
+            }
+            
+            if (userAppointments.length === 0) {
+                showNotification('شما هیچ نوبتی ندارید', true);
+                return;
+            }
+            
+            const detailsContent = document.getElementById('details-content');
+            const appointmentDetails = document.getElementById('appointment-details');
+            
+            let html = '<h3>نوبت‌های رزرو شده توسط شما:</h3>';
+            
+            userAppointments.forEach(app => {
+                html += `
+                    <div style="padding: 15px; margin: 10px 0; background: #f8fafc; border-radius: 10px;">
+                        <p><strong>روز و ساعت:</strong> ${app.day} - ${app.time}</p>
+                        <p><strong>وضعیت:</strong> ${app.confirmed ? '<span class="badge badge-success">تایید شده</span>' : '<span class="badge badge-warning">رزرو شده (در انتظار تأیید)</span>'}</p>
+                        <p><strong>زمان رزرو:</strong> ${new Date(app.bookedAt).toLocaleString('fa-IR')}</p>
+                        ${!app.confirmed ? `<button onclick="cancelAppointment('${app.slotId}')" style="margin-top: 10px;"><i class="fas fa-times"></i> لغو نوبت</button>` : ''}
+                    </div>
+                `;
+            });
+            
+            detailsContent.innerHTML = html;
+            appointmentDetails.classList.remove('hidden');
+        }
+
+        // بررسی نوبت‌هایی که زمان تأیید آنها فرا رسیده
+        function checkConfirmations() {
+            const now = new Date();
+            let updated = false;
+            
+            for (const slotId in appointments) {
+                const appointment = appointments[slotId];
+                if (!appointment.confirmed) {
+                    const bookedAt = new Date(appointment.bookedAt);
+                    const diffInHours = (now - bookedAt) / (1000 * 60 * 60);
+                    
+                    if (diffInHours >= 2) {
+                        appointment.confirmed = true;
+                        updated = true;
+                    }
+                }
+            }
+            
+            if (updated) {
+                localStorage.setItem('appointments', JSON.stringify(appointments));
+                
+                // بروزرسانی برنامه برای همه روزها
+                showDay('saturday');
+                showDay('sunday');
+                showDay('monday');
+            }
+        }
+
+        // نمایش اعلان
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById('notification');
+            
+            notification.classList.add('show');
+            
+            if (isError) {
+                notification.style.backgroundColor = 'var(--danger)';
+                notification.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + message;
+            } else {
+                notification.style.backgroundColor = 'var(--success)';
+                notification.innerHTML = '<i class="fas fa-check-circle"></i> ' + message;
+            }
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // ارسال ایمیل به مدیر با استفاده از EmailJS
+        function sendEmailToAdmin(appointment) {
+            const emailDetails = document.getElementById('email-details');
+            emailDetails.innerHTML = `
+                <p><strong>برای:</strong> search250@gmail.com</p>
+                <p><strong>موضوع:</strong> نوبت جدید مشاوره</p>
+                <p><strong>مشخصات دانش آموز:</strong> ${appointment.name} ${appointment.family}</p>
+                <p><strong>مدرسه:</strong> ${appointment.school}</p>
+                <p><strong>پایه:</strong> ${appointment.grade}</p>
+                <p><strong>زمان نوبت:</strong> ${appointment.day} - ${appointment.time}</p>
+                <p><strong>وضعیت:</strong> ${appointment.confirmed ? 'تایید شده' : 'رزرو شده (در انتظار تأیید)'}</p>
+            `;
+            
+            const emailModal = document.getElementById('email-modal');
+            emailModal.classList.add('show');
+            
+            // پارامترهای ایمیل
+            const templateParams = {
+                to_email: "search250@gmail.com",
+                student_name: appointment.name + " " + appointment.family,
+                school: appointment.school,
+                grade: appointment.grade,
+                appointment_day: appointment.day,
+                appointment_time: appointment.time,
+                status: appointment.confirmed ? 'تایید شده' : 'رزرو شده (در انتظار تأیید)'
+            };
+
+            // ارسال ایمیل واقعی با استفاده از EmailJS
+            emailjs.send('service_xolyw5r', 'template_t833lyo', templateParams)
+                .then(function(response) {
+                    console.log('ایمیل با موفقیت ارسال شد!', response.status, response.text);
+                    document.getElementById('email-message').textContent = 'ایمیل با موفقیت برای مدیر ارسال شد!';
+                }, function(error) {
+                    console.log('خطا در ارسال ایمیل:', error);
+                    document.getElementById('email-message').textContent = 'خطا در ارسال ایمیل. لطفاً بعداً تلاش کنید.';
+                });
+        }
+
+        // بستن مودال ایمیل
+        function hideEmailModal() {
+            const emailModal = document.getElementById('email-modal');
+            emailModal.classList.remove('show');
+        }
+
+        // نمایش فرم ورود مدیر
+        function showAdminLogin() {
+            const adminModal = document.getElementById('admin-login-modal');
+            adminModal.classList.add('show');
+        }
+
+        // پنهان کردن فرم ورود مدیر
+        function hideAdminLogin() {
+            const adminModal = document.getElementById('admin-login-modal');
+            adminModal.classList.remove('show');
+        }
+
+        // ورود مدیر
+        function loginAdmin() {
+            const password = document.getElementById('admin-password').value;
+            
+            // رمز عبور پیش فرض
+            if (password === 'admin123') {
+                isAdmin = true;
+                showNotification('ورود به پنل مدیر موفقیت آمیز بود');
+                hideAdminLogin();
+                // در اینجا می‌توانید پنل مدیر را نمایش دهید
+            } else {
+                showNotification('رمز عبور اشتباه است', true);
+            }
+        }
+
+        // بررسی هر دقیقه برای تأیید خودکار نوبت‌ها
+        setInterval(checkConfirmations, 60000);
+    </script>
+</body>
+</html>

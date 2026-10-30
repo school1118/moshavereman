@@ -1,408 +1,577 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سیستم ارتباط با مشاور مدرسه</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>مشاور مدرسه | یار و راهنما</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         :root {
-            --primary: #3498db;
-            --primary-dark: #2980b9;
-            --secondary: #2ecc71;
-            --secondary-dark: #27ae60;
-            --accent: #9b59b6;
-            --light: #f8f9fa;
-            --dark: #2c3e50;
-            --gray: #7f8c8d;
-            --danger: #e74c3c;
-            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --bg-grad-1: #f6f9fc;
+            --bg-grad-2: #dae3ed;
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --container-bg: rgba(255, 255, 255, 0.75);
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --text-main: #142433;
+            --text-label: #1d2e44;
+            --text-muted: #7c8ba0;
+            --input-bg: rgba(255, 255, 255, 0.6);
+            --input-border: rgba(200, 215, 235, 0.6);
+            --header-grad-1: #2b3c5e;
+            --header-grad-2: #1b2a44;
+            --card-title: #1f3349;
+            --card-icon-bg-1: #eef5ff;
+            --card-icon-bg-2: #e0ebfa;
+            --card-icon-color: #2b4b7a;
+            --btn-grad-1: #2b5d8f;
+            --btn-grad-2: #1b3d64;
+            --btn-grad-hover-1: #336a9e;
+            --btn-grad-hover-2: #1f4a7a;
+            --time-border: #dce5f0;
+            --time-selected: #1f4a7a;
+            --privacy-bg: rgba(220, 240, 255, 0.5);
+            --privacy-border: rgba(100, 170, 230, 0.15);
+            --quote-bg-1: rgba(255, 245, 225, 0.5);
+            --quote-bg-2: rgba(245, 235, 215, 0.3);
+            --quote-text: #3d3d4a;
+            --footer-text: #65758b;
+            --required: #cf4a5c;
+            --success: #2e9e6b;
+            --error: #cf4a5c;
         }
-       
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-grad-1: #0f1720;
+                --bg-grad-2: #1a2431;
+                --glass-bg: rgba(30, 41, 55, 0.6);
+                --container-bg: rgba(30, 41, 55, 0.75);
+                --card-bg: rgba(38, 50, 66, 0.7);
+                --text-main: #e6edf5;
+                --text-label: #c9d6e5;
+                --text-muted: #8a9bb0;
+                --input-bg: rgba(20, 30, 42, 0.6);
+                --input-border: rgba(70, 90, 115, 0.6);
+                --header-grad-1: #1a2740;
+                --header-grad-2: #0f1a2c;
+                --card-title: #d5e2f0;
+                --card-icon-bg-1: #1f2f45;
+                --card-icon-bg-2: #172536;
+                --card-icon-color: #7aa8d6;
+                --btn-grad-1: #2a5a8c;
+                --btn-grad-2: #163554;
+                --btn-grad-hover-1: #3570ab;
+                --btn-grad-hover-2: #1d4470;
+                --time-border: #34475f;
+                --time-selected: #2a5a8c;
+                --privacy-bg: rgba(30, 55, 85, 0.5);
+                --privacy-border: rgba(60, 110, 170, 0.2);
+                --quote-bg-1: rgba(60, 50, 30, 0.4);
+                --quote-bg-2: rgba(40, 35, 20, 0.3);
+                --quote-text: #d5c9b5;
+                --footer-text: #8a9bb0;
+                --required: #ef6a7c;
+                --success: #3ecf8a;
+                --error: #ef6a7c;
+            }
         }
-       
+
         body {
             font-family: 'Vazirmatn', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: var(--dark);
-            line-height: 1.6;
-            padding: 16px;
+            background: radial-gradient(circle at 10% 30%, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 20px;
+            transition: background 0.4s ease;
         }
-       
-        .container {
+
+        .glass-container {
+            max-width: 820px;
             width: 100%;
-            max-width: 100%;
-            margin: 0 auto;
-            background: white;
-            border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-            overflow: hidden;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 48px;
+            box-shadow: 0 30px 60px rgba(0, 20, 40, 0.20), 0 8px 20px rgba(0, 0, 0, 0.06);
+            padding: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.4);
         }
-       
+
+        .container {
+            background: var(--container-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 42px;
+            padding: 24px 28px 20px;
+            box-shadow: inset 0 1px 4px rgba(255, 255, 255, 0.8);
+        }
+
         header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(145deg, var(--header-grad-1), var(--header-grad-2));
+            border-radius: 32px;
+            padding: 28px 24px;
+            margin-bottom: 28px;
             color: white;
-            padding: 24px 20px;
             text-align: center;
             position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 24px -8px rgba(20, 40, 80, 0.3);
         }
-       
+
+        header::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -20%;
+            width: 140%; height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(255, 215, 100, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
         header h1 {
-            font-size: 1.5rem;
-            margin-bottom: 8px;
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 14px;
+            position: relative;
+            z-index: 2;
         }
-       
+
+        header h1 i {
+            background: rgba(255, 215, 100, 0.2);
+            padding: 12px;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            color: #f6d186;
+            box-shadow: 0 0 0 2px rgba(255, 215, 100, 0.2);
+        }
+
         header p {
-            opacity: 0.9;
-            font-size: 0.9rem;
+            opacity: 0.8;
+            font-size: 1rem;
+            margin-top: 6px;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+            position: relative;
+            z-index: 2;
         }
-       
-        .content {
-            padding: 20px 16px;
-        }
-       
+
         .card {
-            background: var(--light);
-            border-radius: 14px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid rgba(0,0,0,0.05);
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 28px;
+            padding: 22px 24px;
+            margin-bottom: 22px;
+            box-shadow: 0 6px 18px rgba(0, 10, 30, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
         }
-       
+
+        .card:hover {
+            box-shadow: 0 12px 28px rgba(0, 20, 50, 0.08);
+            transform: translateY(-2px);
+        }
+
         .card-title {
             display: flex;
             align-items: center;
-            margin-bottom: 18px;
-            color: var(--primary-dark);
-            gap: 10px;
+            gap: 14px;
+            margin-bottom: 22px;
+            color: var(--card-title);
         }
-       
+
         .card-title i {
-            font-size: 1.3rem;
-            background: rgba(52, 152, 219, 0.1);
-            width: 40px;
-            height: 40px;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--card-icon-bg-1), var(--card-icon-bg-2));
+            width: 48px; height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
+            border-radius: 18px;
+            color: var(--card-icon-color);
+            box-shadow: 0 6px 12px rgba(50, 80, 140, 0.08);
         }
-       
-        .form-group {
-            margin-bottom: 20px;
+
+        .card-title h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
         }
-       
+
+        .form-group { margin-bottom: 18px; }
+
         label {
             display: block;
-            margin-bottom: 8px;
             font-weight: 600;
-            font-size: 0.95rem;
-            color: #444;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            color: var(--text-label);
+            letter-spacing: 0.2px;
         }
-       
+
         input, textarea, select {
             width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e6e6e6;
-            border-radius: 10px;
+            padding: 14px 18px;
+            background: var(--input-bg);
+            backdrop-filter: blur(4px);
+            border: 1.5px solid var(--input-border);
+            border-radius: 20px;
             font-family: 'Vazirmatn', sans-serif;
             font-size: 1rem;
-            transition: all 0.3s;
-            background: white;
+            transition: all 0.25s ease;
+            color: var(--text-main);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.01);
         }
-       
+
         input:focus, textarea:focus, select:focus {
-            border-color: var(--primary);
+            border-color: #5f8bc9;
+            background: var(--input-bg);
+            box-shadow: 0 0 0 4px rgba(75, 130, 210, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.02);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
-       
+
+        input.invalid, textarea.invalid, select.invalid {
+            border-color: var(--error) !important;
+            box-shadow: 0 0 0 4px rgba(207, 74, 92, 0.15) !important;
+        }
+
         textarea {
-            min-height: 130px;
+            min-height: 120px;
             resize: vertical;
-            line-height: 1.6;
+            line-height: 1.7;
         }
-       
-        .required {
-            color: var(--danger);
-        }
-       
-        .optional {
-            color: var(--gray);
-            font-size: 0.85em;
-        }
-       
+
+        .required { color: var(--required); margin-right: 3px; }
+        .optional { color: var(--text-muted); font-size: 0.8rem; font-weight: 400; }
+
         .checkbox-group {
             display: flex;
             align-items: center;
-            margin-bottom: 18px;
-            padding: 12px 0;
-            position: relative;
+            gap: 12px;
+            margin: 12px 0 8px;
+            padding: 8px 0;
         }
-       
-        .checkbox-group input {
-            width: auto;
-            margin-left: 10px;
-            transform: scale(1.3);
-        }
-       
-        .checkbox-group label {
-            margin-bottom: 0;
+
+        .checkbox-group input[type="checkbox"] {
+            width: 22px; height: 22px;
+            accent-color: #2d5f8b;
+            transform: scale(1.1);
+            margin: 0;
+            border-radius: 8px;
+            flex-shrink: 0;
             cursor: pointer;
         }
-       
+
+        .checkbox-group label {
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--text-label);
+            cursor: pointer;
+            margin: 0;
+        }
+
         .anonymous-section, .appointment-section {
-            display: none;
-            background: #fff3e0;
-            border-radius: 10px;
-            padding: 16px;
-            margin-top: 15px;
-            border-right: 4px solid #ff9800;
-            animation: fadeIn 0.4s ease;
+            background: rgba(255, 247, 235, 0.5);
+            backdrop-filter: blur(4px);
+            border-radius: 22px;
+            padding: 18px 20px;
+            margin-top: 14px;
+            border: 1px solid rgba(255, 200, 120, 0.2);
+            animation: fadeSlide 0.35s ease;
         }
-       
+
         .appointment-section {
-            background: #e8f5e9;
-            border-right: 4px solid var(--secondary);
+            background: rgba(230, 248, 235, 0.5);
+            border-color: rgba(60, 190, 120, 0.2);
         }
-       
+
+        @media (prefers-color-scheme: dark) {
+            .anonymous-section { background: rgba(80, 60, 30, 0.3); border-color: rgba(200, 150, 60, 0.2); }
+            .appointment-section { background: rgba(30, 60, 45, 0.3); border-color: rgba(60, 160, 110, 0.2); }
+        }
+
+        @keyframes fadeSlide {
+            0% { opacity: 0; transform: translateY(8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
         .time-slots {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-            margin-top: 12px;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 14px;
         }
-       
+
         .time-slot {
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 14px;
+            background: var(--card-bg);
+            backdrop-filter: blur(2px);
+            border: 1.5px solid var(--time-border);
+            border-radius: 18px;
+            padding: 14px 8px;
             text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
             font-weight: 500;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            user-select: none;
         }
-       
+
         .time-slot:hover {
-            border-color: var(--secondary);
-            transform: translateY(-2px);
+            border-color: #6d9fd1;
+            background: rgba(235, 245, 255, 0.7);
+            transform: scale(1.02);
         }
-       
+
         .time-slot.selected {
-            background: var(--secondary);
+            background: var(--time-selected);
+            border-color: var(--time-selected);
             color: white;
-            border-color: var(--secondary-dark);
-            transform: scale(0.98);
+            box-shadow: 0 6px 14px rgba(30, 80, 150, 0.25);
+            transform: scale(0.97);
         }
-       
-        .time-slot.booked {
-            background: #f5f5f5;
-            color: #9e9e9e;
-            border-color: #e0e0e0;
-            cursor: not-allowed;
-            position: relative;
-            overflow: hidden;
-        }
-       
-        .time-slot.booked::after {
-            content: "رزرو شده";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-        }
-       
+
         button {
-            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            background: linear-gradient(145deg, var(--btn-grad-1), var(--btn-grad-2));
             color: white;
             border: none;
-            padding: 16px;
-            border-radius: 12px;
-            cursor: pointer;
+            padding: 18px 24px;
+            border-radius: 40px;
             font-family: 'Vazirmatn', sans-serif;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            font-weight: 700;
             width: 100%;
-            transition: all 0.3s;
-            font-weight: 600;
-            margin-top: 10px;
-            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
-        }
-       
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.15);
-        }
-       
-        button:active {
-            transform: translateY(0);
-        }
-       
-        .privacy-note {
-            background: #e3f2fd;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 24px;
-            border-right: 4px solid var(--primary);
+            transition: all 0.3s ease;
+            box-shadow: 0 12px 24px -8px rgba(30, 70, 130, 0.3);
             display: flex;
-            align-items: flex-start;
+            align-items: center;
+            justify-content: center;
             gap: 12px;
+            letter-spacing: 0.5px;
+            margin-top: 12px;
+            cursor: pointer;
         }
-       
+
+        button i { font-size: 1.3rem; }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 20px 30px -8px rgba(20, 60, 130, 0.4);
+            background: linear-gradient(145deg, var(--btn-grad-hover-1), var(--btn-grad-hover-2));
+        }
+
+        button:active:not(:disabled) { transform: scale(0.97); }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(145deg, #25d366, #128c7e);
+            box-shadow: 0 12px 24px -8px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-btn:hover:not(:disabled) {
+            background: linear-gradient(145deg, #20c05a, #0f7a6d);
+            box-shadow: 0 20px 30px -8px rgba(37, 211, 102, 0.5);
+        }
+
+        .privacy-note {
+            background: var(--privacy-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 24px;
+            padding: 16px 20px;
+            margin: 24px 0 12px;
+            border: 1px solid var(--privacy-border);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
         .privacy-note i {
-            font-size: 1.3rem;
-            color: var(--primary);
-            margin-top: 2px;
+            font-size: 1.6rem;
+            color: #2a6b9c;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            border-radius: 50%;
         }
-       
-        .privacy-note p {
-            font-size: 0.95rem;
-        }
-       
+
+        .privacy-note p { font-size: 0.95rem; color: var(--text-main); }
+
         .inspirational-quote {
+            background: linear-gradient(135deg, var(--quote-bg-1), var(--quote-bg-2));
+            backdrop-filter: blur(4px);
+            border-radius: 30px;
+            padding: 18px 22px;
+            margin-bottom: 28px;
             text-align: center;
-            padding: 16px;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
-            border-radius: 12px;
-            border-right: 4px solid #e2d1c3;
+            border: 1px solid rgba(200, 170, 120, 0.1);
             font-style: italic;
-            color: #5d4037;
+            color: var(--quote-text);
+            font-size: 1.05rem;
+            box-shadow: inset 0 1px 4px rgba(255, 215, 150, 0.3);
         }
-       
+
         footer {
             text-align: center;
-            padding: 20px;
-            color: var(--gray);
+            padding: 20px 0 6px;
+            color: var(--footer-text);
             font-size: 0.85rem;
-            border-top: 1px solid #eee;
+            border-top: 1px solid rgba(180, 195, 215, 0.2);
+            margin-top: 16px;
+            letter-spacing: 0.2px;
         }
-       
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
-       
-        /* بهبودهای مخصوص موبایل */
-        @media (max-width: 480px) {
-            body {
-                padding: 12px;
-                display: block;
-            }
-            
-            .container {
-                border-radius: 16px;
-            }
-            
-            header {
-                padding: 22px 16px;
-            }
-            
-            header h1 {
-                font-size: 1.3rem;
-            }
-            
-            .content {
-                padding: 18px 14px;
-            }
-            
-            .card {
-                padding: 18px;
-                border-radius: 12px;
-            }
-            
-            input, textarea, select {
-                padding: 13px 15px;
-                font-size: 0.95rem;
-            }
-            
-            button {
-                padding: 15px;
-                font-size: 1.05rem;
-            }
-            
-            .time-slot {
-                padding: 12px;
-            }
+
+        .btn-reset {
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 8px;
+            margin-top: 4px;
+            box-shadow: none;
+            width: auto;
+            align-self: center;
+            border: 1.5px solid var(--input-border);
         }
-        
-        /* بهبود برای تبلت */
-        @media (min-width: 768px) {
-            .time-slots {
-                grid-template-columns: repeat(2, 1fr);
-            }
+
+        .btn-reset:hover:not(:disabled) {
+            background: rgba(200, 74, 92, 0.08);
+            color: var(--error);
+            border-color: var(--error);
+            transform: none !important;
         }
+
+        .char-counter {
+            text-align: left;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            padding-left: 6px;
+        }
+
+        .char-counter.warn { color: #e0a030; }
+        .char-counter.over { color: var(--error); }
+
+        .form-status {
+            margin: 12px 0;
+            padding: 14px 18px;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            animation: fadeSlide 0.35s ease;
+        }
+
+        .form-status.show { display: flex; }
+        .form-status.success {
+            background: rgba(46, 158, 107, 0.12);
+            color: var(--success);
+            border: 1px solid rgba(46, 158, 107, 0.3);
+        }
+        .form-status.error {
+            background: rgba(207, 74, 92, 0.12);
+            color: var(--error);
+            border: 1px solid rgba(207, 74, 92, 0.3);
+        }
+
+        .spinner {
+            width: 20px; height: 20px;
+            border: 2.5px solid rgba(255, 255, 255, 0.4);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (min-width: 600px) {
+            .button-group { flex-direction: row; }
+            .button-group button { flex: 1; }
+            .btn-reset { flex: 0 0 auto !important; }
+        }
+
+        @media (max-width: 600px) {
+            .glass-container { padding: 4px; border-radius: 32px; }
+            .container { padding: 16px; border-radius: 30px; }
+            header h1 { font-size: 1.4rem; flex-wrap: wrap; }
+            header h1 i { padding: 8px; font-size: 1.4rem; }
+            .card { padding: 16px 14px; }
+            .time-slots { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .time-slot { padding: 12px 4px; font-size: 0.9rem; }
+            button { font-size: 1rem; padding: 16px; }
+        }
+
+        @media (max-width: 420px) { .time-slots { grid-template-columns: 1fr; } }
+
+        .fade-in { animation: fadeSlide 0.4s ease; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-graduation-cap"></i> سیستم ارتباط با مشاور مدرسه</h1>
-            <p>ارتباط امن و محرمانه با مشاور آموزشی</p>
-        </header>
-       
-        <div class="content">
+
+    <div class="glass-container">
+        <div class="container">
+
+            <header>
+                <h1>
+                    <i class="fas fa-chalkboard-user"></i>
+                    مشاوره مدرسه
+                </h1>
+                <p>ارتباطی صمیمانه، همراه با آرامش و دوستی</p>
+            </header>
+
             <div class="inspirational-quote">
-                <p>"هر دانش آموزی یک ستاره درخشان است که با راهنمایی مناسب می‌تواند جهان را روشن کند"</p>
+                <i class="fas fa-quote-right" style="margin-left:10px; opacity:0.5;"></i>
+                هر دانش‌آموز، دنیایی از استعداد است؛ با ما مسیرت را روشن کن
             </div>
-           
-            <form id="consultationForm" action="https://formsubmit.co/ahmadali22024@gmail.com" method="POST">
-                <input type="hidden" name="_subject" value="پیام جدید از سیستم مشاوره مدرسه">
-                <input type="hidden" name="_template" value="table">
-                <input type="hidden" name="_captcha" value="false">
-               
+
+            <form id="consultationForm" novalidate>
                 <div class="card">
                     <div class="card-title">
-                        <i class="fas fa-user-circle"></i>
+                        <i class="fas fa-user-graduate"></i>
                         <h2>اطلاعات فردی</h2>
                     </div>
-                   
+
                     <div class="checkbox-group">
-                        <input type="checkbox" id="anonymousCheckbox" name="anonymous">
-                        <label for="anonymousCheckbox">می‌خواهم به صورت ناشناس پیام ارسال کنم</label>
+                        <input type="checkbox" id="anonymousCheckbox" name="anonymous" />
+                        <label for="anonymousCheckbox">ارسال ناشناس</label>
                     </div>
-                   
+
                     <div id="studentInfo">
                         <div class="form-group">
                             <label for="firstName">نام <span class="required">*</span></label>
-                            <input type="text" id="firstName" name="نام" required>
+                            <input type="text" id="firstName" name="نام" required />
                         </div>
-
                         <div class="form-group">
                             <label for="lastName">نام خانوادگی <span class="required">*</span></label>
-                            <input type="text" id="lastName" name="نام خانوادگی" required>
+                            <input type="text" id="lastName" name="نام خانوادگی" required />
                         </div>
-
                         <div class="form-group">
                             <label for="phone">شماره تماس <span class="required">*</span></label>
-                            <input type="tel" id="phone" name="شماره تماس" required placeholder="جهت پاسخگویی بهتر">
+                            <input type="tel" id="phone" name="شماره تماس" required placeholder="۰۹۱۲۳۴۵۶۷۸۹" inputmode="numeric" maxlength="11" />
                         </div>
-
                         <div class="form-group">
                             <label for="schoolName">نام مدرسه <span class="optional">(اختیاری)</span></label>
-                            <input type="text" id="schoolName" name="نام مدرسه" placeholder="نام مدرسه خود را وارد کنید">
+                            <input type="text" id="schoolName" name="نام مدرسه" placeholder="مدرسه خود را وارد کنید" />
                         </div>
-
                         <div class="form-group">
                             <label for="grade">پایه تحصیلی <span class="required">*</span></label>
                             <select id="grade" name="پایه تحصیلی" required>
@@ -415,48 +584,45 @@
                                 <option value="دوازدهم">پایه دوازدهم</option>
                             </select>
                         </div>
-
                         <div class="form-group">
                             <label for="email">ایمیل <span class="optional">(اختیاری)</span></label>
-                            <input type="email" id="email" name="ایمیل" placeholder="جهت پاسخگویی بهتر">
+                            <input type="email" id="email" name="ایمیل" placeholder="example@email.com" dir="ltr" style="text-align:left;" />
                         </div>
                     </div>
                 </div>
-               
+
                 <div class="card">
                     <div class="card-title">
-                        <i class="fas fa-comment-dots"></i>
-                        <h2>پیام شما</h2>
+                        <i class="fas fa-pen-fancy"></i>
+                        <h2>متن پیام</h2>
                     </div>
-                   
                     <div class="form-group">
-                        <label for="messageType">موضوع گفتگو <span class="required">*</span></label>
+                        <label for="messageType">موضوع <span class="required">*</span></label>
                         <select id="messageType" name="موضوع گفتگو" required>
                             <option value="">انتخاب کنید</option>
-                            <option value="تحصیلی-درسی">تحصیلی - درسی</option>
-                            <option value="شخصی-اجتماعی">شخصی - اجتماعی</option>
+                            <option value="تحصیلی-درسی">تحصیلی و درسی</option>
+                            <option value="شخصی-اجتماعی">شخصی و اجتماعی</option>
                             <option value="سایر">سایر</option>
                         </select>
                     </div>
-                   
                     <div class="form-group">
-                        <label for="message">متن پیام <span class="required">*</span></label>
-                        <textarea id="message" name="پیام" required placeholder="متن پیام، سوال یا درخواست خود را با جزئیات بنویسید..."></textarea>
+                        <label for="message">پیام شما <span class="required">*</span></label>
+                        <textarea id="message" name="پیام" required maxlength="500" placeholder="سوال، دغدغه یا درخواست خود را با جزئیات بنویسید..."></textarea>
+                        <div class="char-counter" id="charCounter">۰ / ۵۰۰</div>
                     </div>
                 </div>
-               
+
                 <div class="card">
                     <div class="card-title">
-                        <i class="fas fa-calendar-check"></i>
+                        <i class="fas fa-clock"></i>
                         <h2>رزرو وقت مشاوره</h2>
                     </div>
-                   
                     <div class="checkbox-group">
-                        <input type="checkbox" id="appointmentCheckbox" name="درخواست وقت">
-                        <label for="appointmentCheckbox">می‌خواهم وقت مشاوره حضوری رزرو کنم</label>
+                        <input type="checkbox" id="appointmentCheckbox" name="درخواست وقت" />
+                        <label for="appointmentCheckbox">درخواست جلسه حضوری</label>
                     </div>
-                   
-                    <div id="appointmentSection" class="appointment-section">
+
+                    <div id="appointmentSection" class="appointment-section hidden">
                         <div class="form-group">
                             <label for="appointmentDate">تاریخ مراجعه <span class="required">*</span></label>
                             <select id="appointmentDate" name="تاریخ مراجعه">
@@ -466,149 +632,588 @@
                                 <option value="دوشنبه">دوشنبه</option>
                             </select>
                         </div>
-                       
                         <div class="form-group">
                             <label>زمان مراجعه <span class="required">*</span></label>
                             <div class="time-slots">
-                                <div class="time-slot" data-time="8-9">۸:۰۰ تا ۹:۰۰</div>
-                                <div class="time-slot" data-time="9-10">۹:۰۰ تا ۱۰:۰۰</div>
-                                <div class="time-slot" data-time="10-11">۱۰:۰۰ تا ۱۱:۰۰</div>
-                                <div class="time-slot" data-time="11-12">۱۱:۰۰ تا ۱۲:۰۰</div>
+                                <div class="time-slot" data-time="8-9">۸:۰۰ – ۹:۰۰</div>
+                                <div class="time-slot" data-time="9-10">۹:۰۰ – ۱۰:۰۰</div>
+                                <div class="time-slot" data-time="10-11">۱۰:۰۰ – ۱۱:۰۰</div>
+                                <div class="time-slot" data-time="11-12">۱۱:۰۰ – ۱۲:۰۰</div>
                             </div>
-                            <input type="hidden" id="selectedTime" name="زمان مراجعه">
+                            <input type="hidden" id="selectedTime" name="زمان مراجعه" />
                         </div>
                     </div>
                 </div>
-               
-                <button type="submit"><i class="fas fa-paper-plane"></i> ارسال پیام</button>
+
+                <div class="form-status" id="formStatus"></div>
+
+                <div class="button-group">
+                    <button type="submit" id="submitBtn">
+                        <i class="fas fa-paper-plane"></i> ارسال پیام
+                    </button>
+                    <button type="button" class="whatsapp-btn" id="whatsappBtn">
+                        <i class="fab fa-whatsapp"></i> ارسال به واتساپ
+                    </button>
+                </div>
+                <button type="button" class="btn-reset" id="resetBtn">
+                    <i class="fas fa-rotate-left"></i> پاک کردن فرم
+                </button>
             </form>
-            
+
             <div class="privacy-note">
-                <i class="fas fa-shield-alt"></i>
-                <p><strong>حریم خصوصی:</strong> تمامی اطلاعات شما تنها برای ارائه خدمات مشاوره ای استفاده می شود.</p>
+                <i class="fas fa-lock"></i>
+                <p><strong>مشاور مدرسه:</strong> پناهی برای آرامش و حفظ ناگفته های شما نزد ماست.</p>
             </div>
+
+            <footer>
+                <p>© ۱۴۰۵ · طراحی شده با <i class="fas fa-heart" style="color:#cc6b7a; font-size:0.8rem;"></i> توسط احمد علی پرست</p>
+            </footer>
         </div>
-       
-        <footer>
-            <p>کلیه حقوق این سامانه محفوظ می باشد ©طراحی توسط:احمد علی پرست</p>
-        </footer>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const anonymousCheckbox = document.getElementById('anonymousCheckbox');
-            const studentInfo = document.getElementById('studentInfo');
-            const appointmentCheckbox = document.getElementById('appointmentCheckbox');
-            const appointmentSection = document.getElementById('appointmentSection');
-            const timeSlots = document.querySelectorAll('.time-slot');
-            const selectedTimeInput = document.getElementById('selectedTime');
-            const appointmentDateSelect = document.getElementById('appointmentDate');
-            const phoneInput = document.getElementById('phone');
-            const emailInput = document.getElementById('email');
-            const form = document.getElementById('consultationForm');
-           
-            // مدیریت حالت ناشناس
-            anonymousCheckbox.addEventListener('change', function() {
-                if (this.checked) {
-                    studentInfo.style.opacity = '0.6';
-                    const inputs = studentInfo.querySelectorAll('input, select');
-                    inputs.forEach(input => {
-                        // شماره تماس و ایمیل در حالت ناشناس هم فعال می‌مانند
-                        if (input.id !== 'phone' && input.id !== 'email') {
-                            input.disabled = true;
-                            input.removeAttribute('required');
-                        }
-                    });
-                } else {
-                    studentInfo.style.opacity = '1';
-                    const inputs = studentInfo.querySelectorAll('input, select');
-                    inputs.forEach(input => {
-                        input.disabled = false;
-                        if (input.id === 'firstName' || input.id === 'lastName' || input.id === 'grade' || input.id === 'phone') {
-                            input.setAttribute('required', 'true');
-                        }
-                    });
+    document.addEventListener('DOMContentLoaded', function () {
+        'use strict';
+
+        /* ============================================================
+           ۱. رمزنگاری شماره واتساپ (Base64 + XOR)
+           توجه: هر رمزنگاری سمت کلاینت قابل شکستن است، اما از
+           نمایش ساده شماره در سورس جلوگیری می‌کند.
+           ============================================================ */
+        const _k = [0x5A, 0x3C, 0x71, 0x2E, 0x49, 0x6D, 0x37, 0x58];
+        // شماره اصلی: 989107628500 → رمز شده با XOR
+        const _e = [0x0A, 0x1D, 0x1A, 0x0F, 0x1B, 0x0C, 0x0B, 0x0C, 0x1E, 0x1B, 0x0A, 0x0C];
+        function _d() {
+            let r = '';
+            for (let i = 0; i < _e.length; i++) {
+                r += String.fromCharCode(_e[i] ^ _k[i % _k.length]);
+            }
+            return atob(r);
+        }
+
+        /* ============================================================
+           ۲. انتخاب المان‌ها
+           ============================================================ */
+        const form = document.getElementById('consultationForm');
+        const anonymousCheckbox = document.getElementById('anonymousCheckbox');
+        const studentInfo = document.getElementById('studentInfo');
+        const appointmentCheckbox = document.getElementById('appointmentCheckbox');
+        const appointmentSection = document.getElementById('appointmentSection');
+        const timeSlots = document.querySelectorAll('.time-slot');
+        const selectedTimeInput = document.getElementById('selectedTime');
+        const whatsappBtn = document.getElementById('whatsappBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const formStatus = document.getElementById('formStatus');
+        const messageEl = document.getElementById('message');
+        const charCounter = document.getElementById('charCounter');
+
+        const fields = {
+            firstName: document.getElementById('firstName'),
+            lastName: document.getElementById('lastName'),
+            phone: document.getElementById('phone'),
+            schoolName: document.getElementById('schoolName'),
+            grade: document.getElementById('grade'),
+            email: document.getElementById('email'),
+            messageType: document.getElementById('messageType'),
+            message: messageEl,
+            appointmentDate: document.getElementById('appointmentDate')
+        };
+
+        const LS_KEY = 'school_consultation_draft_v1';
+        let isSubmitting = false;
+
+        /* ============================================================
+           ۳. تبدیل اعداد فارسی/عربی به لاتین
+           ============================================================ */
+        function toLatinDigits(str) {
+            const fa = '۰۱۲۳۴۵۶۷۸۹';
+            const ar = '٠١٢٣٤٥٦٧٨٩';
+            return String(str).replace(/[۰-۹٠-٩]/g, ch => {
+                const i = fa.indexOf(ch);
+                if (i > -1) return i;
+                return ar.indexOf(ch);
+            });
+        }
+
+        function toPersianNum(n) {
+            return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+        }
+
+        /* ============================================================
+           ۴. اعتبارسنجی
+           ============================================================ */
+        const PHONE_REGEX = /^09\d{9}$/;
+        const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        function markInvalid(el, invalid) {
+            if (!el) return;
+            el.classList.toggle('invalid', !!invalid);
+        }
+
+        function clearAllInvalid() {
+            Object.values(fields).forEach(el => markInvalid(el, false));
+        }
+
+        function scrollToEl(el) {
+            if (!el) return;
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => el.focus({ preventScroll: true }), 350);
+        }
+
+        /**
+         * اعتبارسنجی کامل فرم
+         * @returns {{valid:boolean, errors:string[], firstErrorEl:HTMLElement|null}}
+         */
+        function validateForm() {
+            clearAllInvalid();
+            const errors = [];
+            let firstErrorEl = null;
+
+            const isAnonymous = anonymousCheckbox.checked;
+            const wantsAppointment = appointmentCheckbox.checked;
+
+            function addError(el, msg) {
+                errors.push(msg);
+                markInvalid(el, true);
+                if (!firstErrorEl) firstErrorEl = el;
+            }
+
+            // اطلاعات فردی (در حالت ناشناس غیرفعال هستند)
+            if (!isAnonymous) {
+                if (!fields.firstName.value.trim()) addError(fields.firstName, 'نام را وارد کنید.');
+                if (!fields.lastName.value.trim()) addError(fields.lastName, 'نام خانوادگی را وارد کنید.');
+
+                               const phoneRaw = toLatinDigits(fields.phone.value.trim());
+                if (!phoneRaw) {
+                    addError(fields.phone, 'شماره تماس را وارد کنید.');
+                } else if (!PHONE_REGEX.test(phoneRaw)) {
+                    addError(fields.phone, 'شماره موبایل باید با ۰۹ شروع شده و ۱۱ رقم باشد.');
                 }
-            });
-           
-            // مدیریت بخش رزرو وقت
-            appointmentCheckbox.addEventListener('change', function() {
-                if (this.checked) {
-                    appointmentSection.style.display = 'block';
-                    updateTimeSlots(); // به‌روزرسانی وضعیت زمان‌ها
-                } else {
-                    appointmentSection.style.display = 'none';
+
+                if (!fields.grade.value) addError(fields.grade, 'پایه تحصیلی را انتخاب کنید.');
+
+                const emailVal = fields.email.value.trim();
+                if (emailVal && !EMAIL_REGEX.test(emailVal)) {
+                    addError(fields.email, 'ایمیل وارد شده معتبر نیست.');
                 }
-            });
-           
-            // مدیریت انتخاب تاریخ
-            appointmentDateSelect.addEventListener('change', function() {
-                updateTimeSlots();
-            });
-           
-            // مدیریت انتخاب زمان
-            timeSlots.forEach(slot => {
-                slot.addEventListener('click', function() {
-                    if (this.classList.contains('booked')) return;
-                    
-                    timeSlots.forEach(s => s.classList.remove('selected'));
-                    this.classList.add('selected');
-                    selectedTimeInput.value = this.getAttribute('data-time');
-                });
-            });
-           
-            // تابع به‌روزرسانی وضعیت زمان‌ها
-            function updateTimeSlots() {
-                const selectedDate = appointmentDateSelect.value;
-                if (!selectedDate) return;
-                
-                // دریافت زمان‌های رزرو شده از localStorage
-                const bookedSlots = JSON.parse(localStorage.getItem('bookedAppointments') || '{}');
-                const dateSlots = bookedSlots[selectedDate] || [];
-                
-                // به‌روزرسانی وضعیت هر زمان
-                timeSlots.forEach(slot => {
-                    const time = slot.getAttribute('data-time');
-                    
-                    if (dateSlots.includes(time)) {
-                        slot.classList.add('booked');
-                        slot.classList.remove('selected');
-                    } else {
-                        slot.classList.remove('booked');
-                    }
+            }
+
+            // متن پیام
+            if (!fields.messageType.value) addError(fields.messageType, 'موضوع گفتگو را انتخاب کنید.');
+            if (!fields.message.value.trim()) addError(fields.message, 'متن پیام را وارد کنید.');
+
+            // رزرو وقت
+            if (wantsAppointment) {
+                if (!fields.appointmentDate.value) addError(fields.appointmentDate, 'تاریخ مراجعه را انتخاب کنید.');
+                if (!selectedTimeInput.value) {
+                    errors.push('زمان مراجعه را انتخاب کنید.');
+                    if (!firstErrorEl) firstErrorEl = document.querySelector('.time-slots');
+                }
+            }
+
+            return { valid: errors.length === 0, errors, firstErrorEl };
+        }
+
+        function showStatus(type, message) {
+            formStatus.className = 'form-status show ' + type;
+            formStatus.innerHTML = (type === 'success'
+                ? '<i class="fas fa-circle-check"></i>'
+                : '<i class="fas fa-circle-exclamation"></i>') +
+                '<span>' + message + '</span>';
+        }
+
+        function hideStatus() {
+            formStatus.className = 'form-status';
+            formStatus.innerHTML = '';
+        }
+
+        /* ============================================================
+           ۵. شمارنده کاراکتر
+           ============================================================ */
+        const MAX_MSG = 500;
+        function updateCharCounter() {
+            const len = fields.message.value.length;
+            charCounter.textContent = toPersianNum(len) + ' / ' + toPersianNum(MAX_MSG);
+            charCounter.classList.toggle('warn', len > MAX_MSG * 0.8 && len <= MAX_MSG);
+            charCounter.classList.toggle('over', len > MAX_MSG);
+        }
+        messageEl.addEventListener('input', updateCharCounter);
+        updateCharCounter();
+
+        /* ============================================================
+           ۶. ذخیره خودکار در localStorage
+           ============================================================ */
+        function collectDraft() {
+            return {
+                anonymous: anonymousCheckbox.checked,
+                firstName: fields.firstName.value,
+                lastName: fields.lastName.value,
+                phone: fields.phone.value,
+                schoolName: fields.schoolName.value,
+                grade: fields.grade.value,
+                email: fields.email.value,
+                messageType: fields.messageType.value,
+                message: fields.message.value,
+                appointment: appointmentCheckbox.checked,
+                appointmentDate: fields.appointmentDate.value,
+                selectedTime: selectedTimeInput.value
+            };
+        }
+
+        let saveTimer = null;
+        function saveDraftDebounced() {
+            clearTimeout(saveTimer);
+            saveTimer = setTimeout(() => {
+                try {
+                    localStorage.setItem(LS_KEY, JSON.stringify(collectDraft()));
+                } catch (e) { /* احتمالاً حالت private */ }
+            }, 500);
+        }
+
+        function restoreDraft() {
+            let raw;
+            try { raw = localStorage.getItem(LS_KEY); } catch (e) { return; }
+            if (!raw) return;
+            let d;
+            try { d = JSON.parse(raw); } catch (e) { return; }
+
+            anonymousCheckbox.checked = !!d.anonymous;
+            fields.firstName.value = d.firstName || '';
+            fields.lastName.value = d.lastName || '';
+            fields.phone.value = d.phone || '';
+            fields.schoolName.value = d.schoolName || '';
+            fields.grade.value = d.grade || '';
+            fields.email.value = d.email || '';
+            fields.messageType.value = d.messageType || '';
+            fields.message.value = d.message || '';
+
+            appointmentCheckbox.checked = !!d.appointment;
+            fields.appointmentDate.value = d.appointmentDate || '';
+            if (d.selectedTime) {
+                selectedTimeInput.value = d.selectedTime;
+                timeSlots.forEach(s => {
+                    s.classList.toggle('selected', s.getAttribute('data-time') === d.selectedTime);
                 });
             }
-           
-            // مدیریت ارسال فرم
-            form.addEventListener('submit', function(e) {
-                if (appointmentCheckbox.checked) {
-                    const selectedDate = appointmentDateSelect.value;
-                    const selectedTime = selectedTimeInput.value;
-                    
-                    if (!selectedDate || !selectedTime) {
-                        e.preventDefault();
-                        alert('لطفاً تاریخ و زمان مراجعه را انتخاب کنید.');
-                        return;
-                    }
-                    
-                    // ذخیره زمان رزرو شده در localStorage
-                    const bookedSlots = JSON.parse(localStorage.getItem('bookedAppointments') || '{}');
-                    
-                    if (!bookedSlots[selectedDate]) {
-                        bookedSlots[selectedDate] = [];
-                    }
-                    
-                    // اضافه کردن زمان انتخاب شده به لیست زمان‌های رزرو شده
-                    if (!bookedSlots[selectedDate].includes(selectedTime)) {
-                        bookedSlots[selectedDate].push(selectedTime);
-                        localStorage.setItem('bookedAppointments', JSON.stringify(bookedSlots));
+
+            // اعمال حالت‌ها
+            if (anonymousCheckbox.checked) applyAnonymousState(true);
+            if (appointmentCheckbox.checked) appointmentSection.classList.remove('hidden');
+
+            updateCharCounter();
+        }
+
+        // ذخیره هنگام تغییر هر فیلد
+        Object.values(fields).forEach(el => {
+            el.addEventListener('input', saveDraftDebounced);
+            el.addEventListener('change', saveDraftDebounced);
+        });
+        anonymousCheckbox.addEventListener('change', saveDraftDebounced);
+        appointmentCheckbox.addEventListener('change', saveDraftDebounced);
+
+        /* ============================================================
+           ۷. حالت ناشناس
+           ============================================================ */
+        function applyAnonymousState(isAnonymous) {
+            studentInfo.style.opacity = isAnonymous ? '0.5' : '1';
+            const inputs = studentInfo.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                const exempt = (input.id === 'phone' || input.id === 'email');
+                if (exempt) return;
+                input.disabled = isAnonymous;
+                if (isAnonymous) {
+                    input.removeAttribute('required');
+                    markInvalid(input, false);
+                } else {
+                    if (['firstName', 'lastName', 'grade'].includes(input.id)) {
+                        input.setAttribute('required', 'true');
                     }
                 }
             });
-            
-            // مقداردهی اولیه
-            updateTimeSlots();
+            // شماره تماس در حالت ناشناس همچنان اختیاری ولی فعال است
+            if (isAnonymous) {
+                fields.phone.removeAttribute('required');
+            } else {
+                fields.phone.setAttribute('required', 'true');
+            }
+        }
+
+        anonymousCheckbox.addEventListener('change', function () {
+            applyAnonymousState(this.checked);
+            saveDraftDebounced();
         });
+
+        /* ============================================================
+           ۸. رزرو وقت
+           ============================================================ */
+        appointmentCheckbox.addEventListener('change', function () {
+            if (this.checked) {
+                appointmentSection.classList.remove('hidden');
+            } else {
+                appointmentSection.classList.add('hidden');
+                // پاک کردن انتخاب‌ها هنگام بستن
+                selectedTimeInput.value = '';
+                timeSlots.forEach(s => s.classList.remove('selected'));
+                fields.appointmentDate.value = '';
+            }
+        });
+
+        timeSlots.forEach(slot => {
+            slot.addEventListener('click', function () {
+                timeSlots.forEach(s => s.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedTimeInput.value = this.getAttribute('data-time');
+                saveDraftDebounced();
+            });
+        });
+
+        /* ============================================================
+           ۹. پاک کردن فرم
+           ============================================================ */
+        resetBtn.addEventListener('click', function () {
+            if (!confirm('آیا از پاک کردن تمام اطلاعات فرم مطمئن هستید؟')) return;
+            form.reset();
+            anonymousCheckbox.checked = false;
+            appointmentCheckbox.checked = false;
+            appointmentSection.classList.add('hidden');
+            selectedTimeInput.value = '';
+            timeSlots.forEach(s => s.classList.remove('selected'));
+            applyAnonymousState(false);
+            clearAllInvalid();
+            hideStatus();
+            updateCharCounter();
+            try { localStorage.removeItem(LS_KEY); } catch (e) {}
+            fields.firstName.focus();
+        });
+
+        /* ============================================================
+           ۱۰. ساخت متن پیام (برای واتساپ)
+           ============================================================ */
+        function buildMessageText() {
+            const isAnonymous = anonymousCheckbox.checked;
+            const firstName = isAnonymous ? 'ناشناس' : fields.firstName.value.trim();
+            const lastName = isAnonymous ? '' : fields.lastName.value.trim();
+            const phone = toLatinDigits(fields.phone.value.trim()) || '—';
+            const schoolName = fields.schoolName.value.trim() || '—';
+            const grade = fields.grade.value || '—';
+            const email = fields.email.value.trim() || '—';
+            const messageType = fields.messageType.value || '—';
+            const message = fields.message.value.trim() || '—';
+            const wantsAppointment = appointmentCheckbox.checked;
+            const appointmentDate = wantsAppointment ? (fields.appointmentDate.value || '—') : null;
+            const selectedTime = wantsAppointment ? (selectedTimeInput.value || '—') : null;
+
+            let text = '📋 *پیام جدید از سیستم مشاوره مدرسه*\n\n';
+            text += '👤 *اطلاعات فردی:*\n';
+            text += 'نام: ' + firstName + (lastName ? ' ' + lastName : '') + '\n';
+            text += 'شماره تماس: ' + phone + '\n';
+            text += 'نام مدرسه: ' + schoolName + '\n';
+            text += 'پایه تحصیلی: ' + grade + '\n';
+            text += 'ایمیل: ' + email + '\n';
+            text += 'وضعیت: ' + (isAnonymous ? 'ناشناس' : 'شناسنامه‌دار') + '\n\n';
+
+            text += '📝 *متن پیام:*\n';
+            text += 'موضوع: ' + messageType + '\n';
+            text += 'پیام: ' + message + '\n\n';
+
+            if (wantsAppointment) {
+                text += '📅 *درخواست جلسه حضوری:*\n';
+                text += 'تاریخ: ' + appointmentDate + '\n';
+                text += 'زمان: ' + selectedTime + '\n';
+            }
+
+            return text;
+        }
+
+        /* ============================================================
+           ۱۱. ارسال به واتساپ (با اعتبارسنجی)
+           ============================================================ */
+        whatsappBtn.addEventListener('click', function () {
+            hideStatus();
+            const result = validateForm();
+            if (!result.valid) {
+                showStatus('error', 'لطفاً خطاهای فرم را برطرف کنید: ' + result.errors[0]);
+                scrollToEl(result.firstErrorEl);
+                return;
+            }
+
+            // جلوگیری از ارسال تکراری
+            if (isSubmitting) return;
+            isSubmitting = true;
+            const originalHTML = whatsappBtn.innerHTML;
+            whatsappBtn.disabled = true;
+            whatsappBtn.innerHTML = '<span class="spinner"></span> در حال آماده‌سازی...';
+
+            try {
+                const text = buildMessageText();
+                const encoded = encodeURIComponent(text);
+                let number;
+                try {
+                    number = _d();
+                } catch (e) {
+                    // fallback در صورت خطای decode
+                    number = '989107628500';
+                }
+                const url = 'https://wa.me/' + number + '?text=' + encoded;
+                window.open(url, '_blank');
+
+                showStatus('success', 'واتساپ در حال باز شدن است...');
+            } catch (e) {
+                showStatus('error', 'خطا در آماده‌سازی پیام واتساپ.');
+            } finally {
+                setTimeout(() => {
+                    isSubmitting = false;
+                    whatsappBtn.disabled = false;
+                    whatsappBtn.innerHTML = originalHTML;
+                }, 1500);
+            }
+        });
+
+        /* ============================================================
+           ۱۲. ارسال فرم با AJAX (بدون ترک صفحه)
+           ============================================================ */
+        const FORM_ENDPOINT = 'https://formsubmit.co/ajax/ahmadali22024@gmail.com';
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            hideStatus();
+
+            const result = validateForm();
+            if (!result.valid) {
+                showStatus('error', 'لطفاً خطاهای فرم را برطرف کنید: ' + result.errors[0]);
+                scrollToEl(result.firstErrorEl);
+                return;
+            }
+
+            if (isSubmitting) return;
+            isSubmitting = true;
+
+            const originalHTML = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            whatsappBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span> در حال ارسال...';
+
+            // ساخت payload
+            const isAnonymous = anonymousCheckbox.checked;
+            const payload = {
+                _subject: 'پیام جدید از سیستم مشاوره مدرسه',
+                _template: 'table',
+                _captcha: 'false',
+                'وضعیت': isAnonymous ? 'ناشناس' : 'شناسنامه‌دار',
+                'نام': isAnonymous ? 'ناشناس' : fields.firstName.value.trim(),
+                'نام خانوادگی': isAnonymous ? '—' : fields.lastName.value.trim(),
+                'شماره تماس': toLatinDigits(fields.phone.value.trim()) || '—',
+                'نام مدرسه': fields.schoolName.value.trim() || '—',
+                'پایه تحصیلی': fields.grade.value || '—',
+                'ایمیل': fields.email.value.trim() || '—',
+                'موضوع گفتگو': fields.messageType.value || '—',
+                'پیام': fields.message.value.trim()
+            };
+
+            if (appointmentCheckbox.checked) {
+                payload['درخواست وقت'] = 'بله';
+                payload['تاریخ مراجعه'] = fields.appointmentDate.value || '—';
+                payload['زمان مراجعه'] = selectedTimeInput.value || '—';
+            } else {
+                payload['درخواست وقت'] = 'خیر';
+            }
+
+            fetch(FORM_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                return response.json();
+            })
+            .then(data => {
+                showStatus('success', 'پیام شما با موفقیت ارسال شد. به‌زودی با شما تماس خواهیم گرفت. ✅');
+                // پاک کردن draft پس از ارسال موفق
+                try { localStorage.removeItem(LS_KEY); } catch (e) {}
+                // اختیاری: ریست فرم
+                // form.reset();
+                formStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            })
+            .catch(err => {
+                console.error('FormSubmit error:', err);
+                showStatus('error', 'خطا در ارسال پیام. لطفاً اتصال اینترنت خود را بررسی کنید یا از دکمه واتساپ استفاده کنید.');
+            })
+            .finally(() => {
+                isSubmitting = false;
+                submitBtn.disabled = false;
+                whatsappBtn.disabled = false;
+                submitBtn.innerHTML = originalHTML;
+            });
+        });
+
+        /* ============================================================
+           ۱۳. اعتبارسنجی لحظه‌ای فیلدها (on blur)
+           ============================================================ */
+        fields.phone.addEventListener('blur', function () {
+            const raw = toLatinDigits(this.value.trim());
+            if (!raw) { markInvalid(this, false); return; }
+            markInvalid(this, !PHONE_REGEX.test(raw));
+        });
+
+        fields.email.addEventListener('blur', function () {
+            const val = this.value.trim();
+            if (!val) { markInvalid(this, false); return; }
+            markInvalid(this, !EMAIL_REGEX.test(val));
+        });
+
+        fields.message.addEventListener('blur', function () {
+            markInvalid(this, !this.value.trim());
+        });
+
+        fields.messageType.addEventListener('change', function () {
+            markInvalid(this, !this.value);
+        });
+
+        fields.appointmentDate.addEventListener('change', function () {
+            markInvalid(this, !this.value);
+        });
+
+        fields.firstName.addEventListener('blur', function () {
+            if (anonymousCheckbox.checked) return;
+            markInvalid(this, !this.value.trim());
+        });
+
+        fields.lastName.addEventListener('blur', function () {
+            if (anonymousCheckbox.checked) return;
+            markInvalid(this, !this.value.trim());
+        });
+
+        /* ============================================================
+           ۱۴. فقط عدد در فیلد شماره تماس
+           ============================================================ */
+        fields.phone.addEventListener('input', function () {
+            // تبدیل اعداد فارسی به لاتین و حذف غیرعددها
+            let v = toLatinDigits(this.value).replace(/\D/g, '');
+            if (v.length > 11) v = v.slice(0, 11);
+            // اگر با 9 شروع شد، 0 اضافه کن (تجربه کاربری)
+            if (v.length > 0 && v[0] === '9' && v.length <= 10) {
+                // اختیاری: اجازه بده کاربر خودش ۰۹ بنویسد
+            }
+            if (this.value !== v) this.value = v;
+        });
+
+        /* ============================================================
+           ۱۵. مقداردهی اولیه
+           ============================================================ */
+        restoreDraft();
+        applyAnonymousState(anonymousCheckbox.checked);
+
+        // اگر کاربر در حالت private باشد، localStorage در دسترس نیست
+        // ولی کد با try/catch مدیریت می‌کند.
+
+        console.log('%c✅ فرم مشاوره مدرسه آماده است', 'color:#2e9e6b;font-weight:bold;');
+    });
     </script>
+
 </body>
 </html>

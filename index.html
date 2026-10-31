@@ -66,10 +66,9 @@
         .checkbox-group { display: flex; align-items: center; gap: 12px; margin: 12px 0 8px; padding: 8px 0; }
         .checkbox-group input[type="checkbox"] { width: 22px; height: 22px; accent-color: #2d5f8b; transform: scale(1.1); margin: 0; border-radius: 8px; flex-shrink: 0; cursor: pointer; }
         .checkbox-group label { font-weight: 500; font-size: 1rem; color: var(--text-label); cursor: pointer; margin: 0; }
-        .anonymous-section, .appointment-section { background: rgba(255,247,235,0.5); backdrop-filter: blur(4px); border-radius: 22px; padding: 18px 20px; margin-top: 14px; border: 1px solid rgba(255,200,120,0.2); animation: fadeSlide 0.35s ease; }
+        .appointment-section { background: rgba(255,247,235,0.5); backdrop-filter: blur(4px); border-radius: 22px; padding: 18px 20px; margin-top: 14px; border: 1px solid rgba(255,200,120,0.2); animation: fadeSlide 0.35s ease; }
         .appointment-section { background: rgba(230,248,235,0.5); border-color: rgba(60,190,120,0.2); }
         @media (prefers-color-scheme: dark) {
-            .anonymous-section { background: rgba(80,60,30,0.3); border-color: rgba(200,150,60,0.2); }
             .appointment-section { background: rgba(30,60,45,0.3); border-color: rgba(60,160,110,0.2); }
         }
         @keyframes fadeSlide { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
@@ -140,10 +139,6 @@
                         <i class="fas fa-user-graduate"></i>
                         <h2>اطلاعات فردی</h2>
                     </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="anonymousCheckbox" name="anonymous" />
-                        <label for="anonymousCheckbox">ارسال ناشناس</label>
-                    </div>
                     <div id="studentInfo">
                         <div class="form-group">
                             <label for="firstName">نام <span class="required">*</span></label>
@@ -158,8 +153,8 @@
                             <input type="tel" id="phone" name="شماره تماس" required placeholder="۰۹۱۲۳۴۵۶۷۸۹" inputmode="numeric" maxlength="11" />
                         </div>
                         <div class="form-group">
-                            <label for="schoolName">نام مدرسه <span class="optional">(اختیاری)</span></label>
-                            <input type="text" id="schoolName" name="نام مدرسه" placeholder="مدرسه خود را وارد کنید" />
+                            <label for="schoolName">نام مدرسه <span class="required">*</span></label>
+                            <input type="text" id="schoolName" name="نام مدرسه" required placeholder="مدرسه خود را وارد کنید" />
                         </div>
                         <div class="form-group">
                             <label for="grade">پایه تحصیلی <span class="required">*</span></label>
@@ -190,14 +185,14 @@
                         <select id="messageType" name="موضوع گفتگو" required>
                             <option value="">انتخاب کنید</option>
                             <option value="تحصیلی-درسی">تحصیلی و درسی</option>
-                            <option value="شخصی-اجتماعی">شخصی و اجتماعی</option>
+                            <option value="فردی-اجتماعی">فردی و اجتماعی</option>
                             <option value="سایر">سایر</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="message">پیام شما <span class="required">*</span></label>
-                        <textarea id="message" name="پیام" required maxlength="500" placeholder="سوال، دغدغه یا درخواست خود را با جزئیات بنویسید..."></textarea>
-                        <div class="char-counter" id="charCounter">۰ / ۵۰۰</div>
+                        <textarea id="message" name="پیام" required maxlength="1000" placeholder="سوال، موضوع یا درخواست خود را با جزئیات بنویسید..."></textarea>
+                        <div class="char-counter" id="charCounter">۰ / ۱۰۰۰</div>
                     </div>
                 </div>
 
@@ -207,8 +202,12 @@
                         <h2>رزرو وقت مشاوره</h2>
                     </div>
                     <div class="checkbox-group">
-                        <input type="checkbox" id="appointmentCheckbox" name="درخواست وقت" />
-                        <label for="appointmentCheckbox">درخواست جلسه حضوری</label>
+                        <input type="checkbox" id="inPersonCheckbox" name="درخواست جلسه حضوری" />
+                        <label for="inPersonCheckbox">درخواست جلسه حضوری</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="onlineCheckbox" name="درخواست جلسه آنلاین" />
+                        <label for="onlineCheckbox">درخواست جلسه آنلاین</label>
                     </div>
                     <div id="appointmentSection" class="appointment-section hidden">
                         <div class="form-group">
@@ -250,11 +249,11 @@
 
             <div class="privacy-note">
                 <i class="fas fa-lock"></i>
-                <p><strong>مشاور مدرسه:</strong> پناهی برای آرامش و حفظ ناگفته های شما نزد ماست.</p>
+                <p><strong>مشاور مدرسه:</strong> اینجا پناهی برای آرامش و حرف های ناگفته شماست.</p>
             </div>
 
             <footer>
-                <p>© ۱۴۰۵ · طراحی شده با <i class="fas fa-heart" style="color:#cc6b7a; font-size:0.8rem;"></i> توسط احمد علی پرست</p>
+                <p>© ۱۴۰۵ · طراحی شده  <i class="fas fa-heart" style="color:#cc6b7a; font-size:0.8rem;"></i> توسط احمد علی پرست</p>
             </footer>
         </div>
     </div>
@@ -277,9 +276,8 @@
         }
 
         const form = document.getElementById('consultationForm');
-        const anonymousCheckbox = document.getElementById('anonymousCheckbox');
-        const studentInfo = document.getElementById('studentInfo');
-        const appointmentCheckbox = document.getElementById('appointmentCheckbox');
+        const inPersonCheckbox = document.getElementById('inPersonCheckbox');
+        const onlineCheckbox = document.getElementById('onlineCheckbox');
         const appointmentSection = document.getElementById('appointmentSection');
         const timeSlots = document.querySelectorAll('.time-slot');
         const selectedTimeInput = document.getElementById('selectedTime');
@@ -340,8 +338,7 @@
             clearAllInvalid();
             const errors = [];
             let firstErrorEl = null;
-            const isAnonymous = anonymousCheckbox.checked;
-            const wantsAppointment = appointmentCheckbox.checked;
+            const wantsAppointment = inPersonCheckbox.checked || onlineCheckbox.checked;
 
             function addError(el, msg) {
                 errors.push(msg);
@@ -349,20 +346,19 @@
                 if (!firstErrorEl) firstErrorEl = el;
             }
 
-            if (!isAnonymous) {
-                if (!fields.firstName.value.trim()) addError(fields.firstName, 'نام را وارد کنید.');
-                if (!fields.lastName.value.trim()) addError(fields.lastName, 'نام خانوادگی را وارد کنید.');
-                const phoneRaw = toLatinDigits(fields.phone.value.trim());
-                if (!phoneRaw) {
-                    addError(fields.phone, 'شماره تماس را وارد کنید.');
-                } else if (!PHONE_REGEX.test(phoneRaw)) {
-                    addError(fields.phone, 'شماره موبایل باید با ۰۹ شروع شده و ۱۱ رقم باشد.');
-                }
-                if (!fields.grade.value) addError(fields.grade, 'پایه تحصیلی را انتخاب کنید.');
-                const emailVal = fields.email.value.trim();
-                if (emailVal && !EMAIL_REGEX.test(emailVal)) {
-                    addError(fields.email, 'ایمیل وارد شده معتبر نیست.');
-                }
+            if (!fields.firstName.value.trim()) addError(fields.firstName, 'نام را وارد کنید.');
+            if (!fields.lastName.value.trim()) addError(fields.lastName, 'نام خانوادگی را وارد کنید.');
+            const phoneRaw = toLatinDigits(fields.phone.value.trim());
+            if (!phoneRaw) {
+                addError(fields.phone, 'شماره تماس را وارد کنید.');
+            } else if (!PHONE_REGEX.test(phoneRaw)) {
+                addError(fields.phone, 'شماره موبایل باید با ۰۹ شروع شده و ۱۱ رقم باشد.');
+            }
+            if (!fields.schoolName.value.trim()) addError(fields.schoolName, 'نام مدرسه را وارد کنید.');
+            if (!fields.grade.value) addError(fields.grade, 'پایه تحصیلی را انتخاب کنید.');
+            const emailVal = fields.email.value.trim();
+            if (emailVal && !EMAIL_REGEX.test(emailVal)) {
+                addError(fields.email, 'ایمیل وارد شده معتبر نیست.');
             }
 
             if (!fields.messageType.value) addError(fields.messageType, 'موضوع گفتگو را انتخاب کنید.');
@@ -402,7 +398,6 @@
         // ذخیره خودکار در localStorage
         function collectDraft() {
             return {
-                anonymous: anonymousCheckbox.checked,
                 firstName: fields.firstName.value,
                 lastName: fields.lastName.value,
                 phone: fields.phone.value,
@@ -411,7 +406,8 @@
                 email: fields.email.value,
                 messageType: fields.messageType.value,
                 message: fields.message.value,
-                appointment: appointmentCheckbox.checked,
+                inPerson: inPersonCheckbox.checked,
+                online: onlineCheckbox.checked,
                 appointmentDate: fields.appointmentDate.value,
                 selectedTime: selectedTimeInput.value
             };
@@ -432,7 +428,6 @@
             let d;
             try { d = JSON.parse(raw); } catch (e) { return; }
 
-            anonymousCheckbox.checked = !!d.anonymous;
             fields.firstName.value = d.firstName || '';
             fields.lastName.value = d.lastName || '';
             fields.phone.value = d.phone || '';
@@ -442,7 +437,8 @@
             fields.messageType.value = d.messageType || '';
             fields.message.value = d.message || '';
 
-            appointmentCheckbox.checked = !!d.appointment;
+            inPersonCheckbox.checked = !!d.inPerson;
+            onlineCheckbox.checked = !!d.online;
             fields.appointmentDate.value = d.appointmentDate || '';
             if (d.selectedTime) {
                 selectedTimeInput.value = d.selectedTime;
@@ -451,8 +447,7 @@
                 });
             }
 
-            if (anonymousCheckbox.checked) applyAnonymousState(true);
-            if (appointmentCheckbox.checked) appointmentSection.classList.remove('hidden');
+            if (inPersonCheckbox.checked || onlineCheckbox.checked) appointmentSection.classList.remove('hidden');
             updateCharCounter();
         }
 
@@ -460,47 +455,19 @@
             el.addEventListener('input', saveDraftDebounced);
             el.addEventListener('change', saveDraftDebounced);
         });
-        anonymousCheckbox.addEventListener('change', saveDraftDebounced);
-        appointmentCheckbox.addEventListener('change', saveDraftDebounced);
+        inPersonCheckbox.addEventListener('change', toggleAppointmentSection);
+        onlineCheckbox.addEventListener('change', toggleAppointmentSection);
 
-        function applyAnonymousState(isAnonymous) {
-            studentInfo.style.opacity = isAnonymous ? '0.5' : '1';
-            const inputs = studentInfo.querySelectorAll('input, select');
-            inputs.forEach(input => {
-                const exempt = (input.id === 'phone' || input.id === 'email');
-                if (exempt) return;
-                input.disabled = isAnonymous;
-                if (isAnonymous) {
-                    input.removeAttribute('required');
-                    markInvalid(input, false);
-                } else {
-                    if (['firstName', 'lastName', 'grade'].includes(input.id)) {
-                        input.setAttribute('required', 'true');
-                    }
-                }
-            });
-            if (isAnonymous) {
-                fields.phone.removeAttribute('required');
-            } else {
-                fields.phone.setAttribute('required', 'true');
-            }
-        }
-
-        anonymousCheckbox.addEventListener('change', function () {
-            applyAnonymousState(this.checked);
-            saveDraftDebounced();
-        });
-
-        appointmentCheckbox.addEventListener('change', function () {
-            if (this.checked) {
-                appointmentSection.classList.remove('hidden');
-            } else {
-                appointmentSection.classList.add('hidden');
+        function toggleAppointmentSection() {
+            const wantsAppointment = inPersonCheckbox.checked || onlineCheckbox.checked;
+            appointmentSection.classList.toggle('hidden', !wantsAppointment);
+            if (!wantsAppointment) {
                 selectedTimeInput.value = '';
                 timeSlots.forEach(s => s.classList.remove('selected'));
                 fields.appointmentDate.value = '';
             }
-        });
+            saveDraftDebounced();
+        }
 
         timeSlots.forEach(slot => {
             slot.addEventListener('click', function () {
@@ -514,12 +481,11 @@
         resetBtn.addEventListener('click', function () {
             if (!confirm('آیا از پاک کردن تمام اطلاعات فرم مطمئن هستید؟')) return;
             form.reset();
-            anonymousCheckbox.checked = false;
-            appointmentCheckbox.checked = false;
+            inPersonCheckbox.checked = false;
+            onlineCheckbox.checked = false;
             appointmentSection.classList.add('hidden');
             selectedTimeInput.value = '';
             timeSlots.forEach(s => s.classList.remove('selected'));
-            applyAnonymousState(false);
             clearAllInvalid();
             hideStatus();
             updateCharCounter();
@@ -528,34 +494,36 @@
         });
 
         function buildMessageText() {
-            const isAnonymous = anonymousCheckbox.checked;
-            const firstName = isAnonymous ? 'ناشناس' : fields.firstName.value.trim();
-            const lastName = isAnonymous ? '' : fields.lastName.value.trim();
+            const firstName = fields.firstName.value.trim();
+            const lastName = fields.lastName.value.trim();
             const phone = toLatinDigits(fields.phone.value.trim()) || '—';
             const schoolName = fields.schoolName.value.trim() || '—';
             const grade = fields.grade.value || '—';
             const email = fields.email.value.trim() || '—';
             const messageType = fields.messageType.value || '—';
             const message = fields.message.value.trim() || '—';
-            const wantsAppointment = appointmentCheckbox.checked;
+            const wantsAppointment = inPersonCheckbox.checked || onlineCheckbox.checked;
+            const meetingTypes = [
+                inPersonCheckbox.checked ? 'حضوری' : '',
+                onlineCheckbox.checked ? 'آنلاین' : ''
+            ].filter(Boolean).join(' و ');
             const appointmentDate = wantsAppointment ? (fields.appointmentDate.value || '—') : null;
             const selectedTime = wantsAppointment ? (selectedTimeInput.value || '—') : null;
 
             let text = '📋 *پیام جدید از سیستم مشاوره مدرسه*\n\n';
             text += '👤 *اطلاعات فردی:*\n';
-            text += 'نام: ' + firstName + (lastName ? ' ' + lastName : '') + '\n';
+            text += 'نام: ' + firstName + ' ' + lastName + '\n';
             text += 'شماره تماس: ' + phone + '\n';
             text += 'نام مدرسه: ' + schoolName + '\n';
             text += 'پایه تحصیلی: ' + grade + '\n';
             text += 'ایمیل: ' + email + '\n';
-            text += 'وضعیت: ' + (isAnonymous ? 'ناشناس' : 'شناسنامه‌دار') + '\n\n';
 
             text += '📝 *متن پیام:*\n';
             text += 'موضوع: ' + messageType + '\n';
             text += 'پیام: ' + message + '\n\n';
 
             if (wantsAppointment) {
-                text += '📅 *درخواست جلسه حضوری:*\n';
+                text += '📅 *درخواست جلسه ' + meetingTypes + ':*\n';
                 text += 'تاریخ: ' + appointmentDate + '\n';
                 text += 'زمان: ' + selectedTime + '\n';
             }
@@ -615,16 +583,14 @@
             whatsappBtn.disabled = true;
             submitBtn.innerHTML = '<span class="spinner"></span> در حال ارسال...';
 
-            const isAnonymous = anonymousCheckbox.checked;
             const payload = {
                 access_key: WEB3FORMS_ACCESS_KEY,
                 subject: 'پیام جدید از سیستم مشاوره مدرسه',
                 from_name: 'مشاوره مدرسه',
-                'وضعیت': isAnonymous ? 'ناشناس' : 'شناسنامه‌دار',
-                'نام': isAnonymous ? 'ناشناس' : fields.firstName.value.trim(),
-                'نام خانوادگی': isAnonymous ? '—' : fields.lastName.value.trim(),
+                'نام': fields.firstName.value.trim(),
+                'نام خانوادگی': fields.lastName.value.trim(),
                 'شماره تماس': toLatinDigits(fields.phone.value.trim()) || '—',
-                'نام مدرسه': fields.schoolName.value.trim() || '—',
+                'نام مدرسه': fields.schoolName.value.trim(),
                 'پایه تحصیلی': fields.grade.value || '—',
                 'ایمیل': fields.email.value.trim() || '—',
                 'موضوع گفتگو': fields.messageType.value || '—',
@@ -635,12 +601,11 @@
                 payload.replyto = fields.email.value.trim();
             }
 
-            if (appointmentCheckbox.checked) {
-                payload['درخواست وقت'] = 'بله';
+            payload['درخواست جلسه حضوری'] = inPersonCheckbox.checked ? 'بله' : 'خیر';
+            payload['درخواست جلسه آنلاین'] = onlineCheckbox.checked ? 'بله' : 'خیر';
+            if (inPersonCheckbox.checked || onlineCheckbox.checked) {
                 payload['تاریخ مراجعه'] = fields.appointmentDate.value || '—';
                 payload['زمان مراجعه'] = selectedTimeInput.value || '—';
-            } else {
-                payload['درخواست وقت'] = 'خیر';
             }
 
             fetch(WEB3FORMS_ENDPOINT, {
@@ -712,12 +677,10 @@
         });
 
         fields.firstName.addEventListener('blur', function () {
-            if (anonymousCheckbox.checked) return;
             markInvalid(this, !this.value.trim());
         });
 
         fields.lastName.addEventListener('blur', function () {
-            if (anonymousCheckbox.checked) return;
             markInvalid(this, !this.value.trim());
         });
 
@@ -729,7 +692,6 @@
 
         // مقداردهی اولیه
         restoreDraft();
-        applyAnonymousState(anonymousCheckbox.checked);
     });
     </script>
 </body>
